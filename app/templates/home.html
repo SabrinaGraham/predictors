@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block tool %} 
+    <a href="{{ url_for('predict') }}"  class="btn btn-success">Prediction Tool</a>
+{% endblock%}
+        
+{% block main %}
+{% include 'flash_messages.html' %}
+<div class="p-5 mb-4 bg-light rounded-3" class="card-group">
+    <div class="card" >
+        <div class="card-body">
+          <h1 class="card-title" >Crime Overview</h1>
+          <p  class="lead">This demo app demonstrates the use of Flask-Login and Flask-Migrate extensions</p>
+          <a href="#" class="btn btn-dark" >More</a>
+        </div>
+    </div>
+    <br>
+    <div class="card" >
+        <div class="card-body">
+          <h1 class="card-title" >How can you help</h1>
+          <p  class="lead">This demo app demonstrates the use of Flask-Login and Flask-Migrate extensions</p>
+          <a href="#" class="btn btn-dark">More</a>
+        </div>
+    </div>
+    <br>
+    <div class="card" >
+        <div class="card-body">
+          <h1 class="card-title" >How to stay safe</h1>
+          <p  class="lead">This demo app demonstrates the use of Flask-Login and Flask-Migrate extensions</p>
+          <a href="#" class="btn btn-dark">More</a>
+        </div>
+    </div>
+    
+</div>
+
+{% endblock %}

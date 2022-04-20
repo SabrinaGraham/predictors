@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block main %}
+  <div class="login-form text-center">
+    <h2 class="h3 mb-3 fw-normal">Predict Crime Now</h2>
+    {% include 'flash_messages.html' %}
+    <form action="{{ url_for('predict', next=request.args.get('next')) }}" method="post">
+      {{ form.csrf_token }}
+      <div class="form-floating">
+        {{ form.division.label }}
+        <br><br>
+        {{ form.division(class='form-control', placeholder="Select your division") }}
+      </div>
+      <br>
+      <div class="form-floating">
+        {{ form.month.label }}
+        <br><br>
+        {{ form.month(class='form-control', placeholder="Select a month") }}
+        
+      </div>
+      <br>
+      <div class="form-floating">
+        {{ form.crime.label }}
+        <br><br>
+        {{ form.crime(class='form-control', placeholder="Select the crime type") }} 
+        
+      </div>
+      <br><br>
+      <button type="submit" name="submit" class="w-100 btn btn-dark btn-block">Predict</button>
+    </form>
+  </div>
+{% endblock %}
