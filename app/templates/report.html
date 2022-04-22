@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block main %}
+  <div class="login-form text-center">
+    <h2 class="h3 mb-3 fw-normal">Send a Report</h2>
+    {% include 'flash_messages.html' %}
+    <form action="{{ url_for('report', next=request.args.get('next')) }}" method="post">
+      {{ form.csrf_token }}
+      <div class="form-floating">
+        {{ form.division.label }}
+        <br><br>
+        {{ form.division(class='form-control', placeholder="Select the location") }}
+      </div>
+     
+      <br>
+      <div class="form-floating">
+        {{ form.city.label }}
+        <br><br>
+        {{ form.city(class='form-control', placeholder="Enter the city/town") }} 
+      </div>
+
+      <br>
+      <div class="form-floating">
+        {{ form.crime.label }}
+        <br><br>
+        {{ form.crime(class='form-control', placeholder="Select the type of crime") }} 
+      </div>
+
+      <br>
+      <div class="form-floating">
+        {{ form.date.label }}
+        <br><br>
+        {{ form.date(class='form-control', placeholder="Select the date") }} 
+      </div>
+
+      <br>
+      <div class="form-floating">
+        {{ form.time.label }}
+        <br><br>
+        {{ form.time(class='form-control', placeholder="Enter the estimate time of the crime") }} 
+      </div>
+
+      <br>
+      <div class="form-floating">
+        {{ form.details.label }}
+        <br><br>
+        {{ form.details(class='form-control', placeholder="Enter the details of the crime") }} 
+      </div>
+
+
+
+      <br><br>
+      <button type="submit" name="submit" class="w-100 btn btn-dark btn-block">Submit</button>
+    </form>
+  </div>
+{% endblock %}

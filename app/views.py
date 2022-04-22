@@ -9,7 +9,7 @@ from __future__ import division
 from app import app, db, login_manager
 from flask import render_template, request, redirect, url_for, flash, session
 from flask_login import login_user, logout_user, current_user, login_required
-from app.forms import LoginForm, PredictForm, PhoneForm
+from app.forms import LoginForm, PredictForm, ReportForm
 from app.models import UserProfile
 from werkzeug.security import check_password_hash
 
@@ -198,6 +198,13 @@ def add_header(response):
 def page_not_found(error):
     """Custom 404 page."""
     return render_template('404.html'), 404
+
+
+@app.route('/report',methods=['GET','POST'])
+def report():
+    """Initialization of report form."""
+    form = ReportForm()
+    return render_template('report.html', form=form)
 
 
 if __name__ == '__main__':
