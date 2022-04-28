@@ -1,59 +1,69 @@
 {% extends "base.html" %}
 
 {% block main %}
-<div class="container ">
-    <div class="card d-flex flex-row">
-        
-        <div class="card-image">
-            <a href="#">
-                <img class="card-image-left img-fluid" 
-        
-                src="https://images.unsplash.com/photo-1617650728468-8581e439c864?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
-                alt=""
-                />
-            </a>
-        </div>
-        
-        <div class="card-body d-flex flex-column pt-2 ">
-            <div class="d-flex justify-content-between flex-column">
-                <h1 class="card-title lead">Fancy Green Car</h1>
-                <h6 class="text-muted">Model S</h6>
-                <small class="text-muted pt-3">I can't describe this car because i know nothing about cars. So I'm just gonna type sentences that are totally unrelated to the car's desciption.</small>
-            </div>
-            <div class="d-flex flex-row pt-3">
-                <div class="d-flex flex-column">
-                    <div class="d-flex flex-row ">
-                        <div class="text-muted font-weight-bold px-3 ">Color</div>
-                        <div class="font-weight-bold px-3 ">xxxx</div>
-                    </div>
-                    <br>
-                    <div class="d-flex flex-row">
-                        <div class="text-muted font-weight-bold px-3">Price</div>
-                        <div class="font-weight-bold px-3">xxxx</div>
-                    </div>
-                </div>
-                <div class="p-4"></div>
-                <div class="d-flex flex-column ">
-                    <div class="d-flex flex-row">
-                        <div class="text-muted font-weight-bold px-3">Body Type</div>
-                        <div class="font-weight-bold px-3">xxxx</div>
-                    </div>
-                    <br>
-                    <div class="d-flex flex-row">
-                        <div class="text-muted font-weight-bold px-3">Transmission</div>
-                        <div class="font-weight-bold px-3">xxxx</div>
-                    </div> 
-                </div>
-            </div>
-            <div class="pt-4">
-                <a href="#" class="btn btn-secondary btn-success mt-4">
-                    <small>More Details</small>
-                </a>
-                <span id = heart><i class="fa fa-heart-o" aria-hidden="true" ></i> </span>
-            </div>
-        </div>
+  <div class="login-form text-center">
+    <h2 class="h3 mb-3 fw-normal">Dashboard</h2>
+    {% include 'flash_messages.html' %}
+    <form action="{{ url_for('dashboard', next=request.args.get('next')) }}" method="post">
 
+    <div class="container">
+        <div class="row">
+            <div class = "col">
+                <div class="card border-info" style="width: 32rem;">
+                    <div class="card-body">
+                        <p class="text-uppercase small mb-2"><strong>Parish with Most Overall Crime</strong></p>
+                    </div>
+                    <hr class="my-0">
+                    <div class="card-body">
+                        <canvas id="barChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="col">
+            <div class="card border-info" style="width: 32rem;">
+                <div class="card-body">
+                    <p class="text-uppercase small mb-2"><strong>Total Reports Made by Parish</strong></p>
+                </div>
+                <hr class="my-0">
+                <div class="card-body">
+                    <canvas id="barChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="w-100"></div>
+
+        <div class = "col">
+            <div class="card border-info" style="width: 32rem;">
+                <div class="card-body">
+                    <p class="text-uppercase small mb-2"><strong>Division with Highest Crime Rate</strong></p>
+                </div>
+                <hr class="my-0">
+                <div class="card-body">
+                    <canvas id="barChart"></canvas>
+                </div>
+            </div>
+            <br>
+        </div>
+        <div class="col">
+            <div class="card border-info" style="width: 32rem;">
+                <div class="card-body">
+                    <p class="text-uppercase small mb-2"><strong>Frequency of Each Crime</strong></p>
+                </div>
+                <hr class="my-0">
+                <div class="card-body">
+                    <canvas id="barChart"></canvas>
+                </div>
+            </div>
+        </div>
+         
     </div>
-</div>
+    </form>
+  </div> 
+{% endblock %} 
 
-{% endblock %}
+
+
+

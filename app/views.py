@@ -207,5 +207,11 @@ def report():
     return render_template('report.html', form=form)
 
 
+@app.route('/dashboard',methods=['GET','POST'])
+def dashboard():
+    """Initialization of dashboard form"""
+    return render_template('test.html')
+    
+
 if __name__ == '__main__':
     app.run(debug=True, host="0.0.0.0", port="8080")
