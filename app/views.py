@@ -38,7 +38,7 @@ def about():
 
 def secure_page():
     """Render a secure page on our website that only logged in users can access."""
-    return render_template('test.html')
+    return render_template('notification.html')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -244,19 +244,6 @@ def page_not_found(error):
     """Custom 404 page."""
     return render_template('404.html'), 404
 
-
-@app.route('/report',methods=['GET','POST'])
-def report():
-    """Initialization of report form."""
-    form = ReportForm()
-    return render_template('report.html', form=form)
-
-
-@app.route('/dashboard',methods=['GET','POST'])
-def dashboard():
-    """Initialization of dashboard form"""
-    return render_template('test.html')
-    
 
 if __name__ == '__main__':
     app.run(debug=True, host="0.0.0.0", port="8080")
