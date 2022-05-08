@@ -9,9 +9,13 @@ from __future__ import division
 from app import app, db, login_manager
 from flask import render_template, request, redirect, url_for, flash, session
 from flask_login import login_user, logout_user, current_user, login_required
-from app.forms import LoginForm, PredictForm, PhoneForm
+from app.forms import LoginForm, PredictForm, PhoneForm, ReportForm
 from app.models import UserProfile
 from werkzeug.security import check_password_hash
+from bs4 import BeautifulSoup
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 
 ###
 # Routing for your application.
@@ -143,7 +147,48 @@ def predict():
 def dashboard():
     return render_template('dashboard.html')
 """
+@app.route("/news")
+def news():
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+    driver.get('https://www.jamaicaobserver.com/section/latest-news/')
 
+    results = []
+
+    content = driver.page_source
+    soup = BeautifulSoup(content, features="html.parser")
+    driver.quit()
+
+    for element in soup.findAll(attrs='col-12 col-md-6 article-wrapper'):
+        image=element.find('img').get('src') 
+        #if image not in results:
+        #    results.append(image)
+        title=element.find(attrs='headline').find('a')
+
+        #if title not in results:
+        #    results.append(title.text)
+    
+        pub=element.find(attrs='pubdate')
+
+        #if pub not in results:
+         #   results.append(pub.text)
+        
+        lynk=element.find(attrs='headline').find('a').get('href')
+        record={'image':image, 'title':title.text, 'pub':pub.text, 'link':lynk}
+        results.append(record)
+    print(results)
+    return render_template('news.html', lst=results)
+
+@app.route('/report',methods=['GET','POST'])
+def report():
+    """Initialization of report form."""
+    form = ReportForm()
+    return render_template('report.html', form=form)
+
+@app.route('/dashboard',methods=['GET','POST'])
+def dashboard():
+    """Initialization of dashboard form"""
+    return render_template('dashboard.html')
+    
 @app.route("/logout")
 @login_required
 def logout():

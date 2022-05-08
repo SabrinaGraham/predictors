@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block main %}
+
+
+
+    <div class="container-fluid row h-100 justify-content-center align-items-center">
+        <h1 class="card-title">Latest News</h1>
+        
+        
+        {% for l in lst %}
+        <div class="card" style="width:20rem; height: 20rem;">
+            
+            <img class="card-img-top" src="{{l['image']}}"/>
+            
+            <div class="card-body flex-row">
+                <div class="card-title"><h5><a href="{{l['link']}}">{{l['title']}}</a></h5></div>
+                <div class="card-text"><h6>{{l['pub']}}</h6></div>
+            </div>
+        </div>
+        {% endfor %}
+        <br>
+        <div class="text-muted"><a href="https://www.jamaicaobserver.com/section/latest-news/">Source: Jamaica Observer</a></div>
+    </div>
+
+    <br><br><br><br>
+    <div class="container-fluid text-center">
+        <h1 class="card-title">Hotspots</h1>
+
+        <img src="{{url_for('static', filename='images/Crime-density.png')}}" style="width:50rem;">
+    </div>
+
+{% endblock %}

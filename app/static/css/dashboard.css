@@ -11,8 +11,12 @@ a, a:hover, a:focus {
 
 .wrapper {
     padding-top: 20px;
+    padding-left: 10px;
     display: flex;
     align-items: stretch;
+    height: 100%;
+    position: fixed;
+    left:0;
 }
 #sidebar {
     min-width: 250px;
@@ -50,6 +54,6 @@ a, a:hover, a:focus {
 }*/
 ul ul a {
     font-size: 0.9em !important;
-    padding-left: 30px !important;
+    padding-left: 35px !important;
     background: #6d7fcc;
 }

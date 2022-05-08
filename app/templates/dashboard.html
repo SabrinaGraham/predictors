@@ -1,40 +1,68 @@
-<div class="wrapper">
-    <nav id="sidebar">
-        
-        <ul class="components">
-            <li class="active">
-                <a class="nav-link active" href="{{ url_for('home') }}">Home</a>
-            </li>
-            <li>
-                <a class="nav-link" href="{{ url_for('secure_page') }}">Dashboard</a>
-            </li>
-            <li>
-                <a class="nav-link" href="{{ url_for('home') }}">News</a>
-            </li>
-            <li>
-                <a class="nav-link" href="{{ url_for('predict') }}">Predict Crime Rates</a>
-            </li>
-            <li>
-                <a class="nav-link" href="{{ url_for('home') }}">Reports</a>
-            </li>
-            <li>
-                <a class="nav-link" href="{{ url_for('home') }}">Notifications</a>
-            </li>
-            <li>
-                <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
-            </li>
-        </ul>
-    </nav>
-    </div>
-    <!--div id="content">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container-fluid">
-    
-                <button type="button" id="sidebarCollapse" class="btn btn-info">
-                    <i class="fas fa-align-left"></i>
-                    <span>Toggle Sidebar</span>
-                </button>
-    
+{% extends "base.html" %}
+
+{% block main %}
+  <div class="login-form text-center">
+    <h2 class="h3 mb-3 fw-normal">Dashboard</h2>
+    {% include 'flash_messages.html' %}
+    <form action="{{ url_for('dashboard', next=request.args.get('next')) }}" method="post">
+
+    <div class="container">
+        <div class="row">
+            <div class = "col">
+                <div class="card border-info" style="width: 32rem;">
+                    <div class="card-body">
+                        <p class="text-uppercase small mb-2"><strong>Parish with Most Overall Crime</strong></p>
+                    </div>
+                    <hr class="my-0">
+                    <div class="card-body">
+                        <canvas id="barChart"></canvas>
+                    </div>
+                </div>
             </div>
-        </nav>
-    </div-->
+        </div>
+        <br>
+        <div class="col">
+            <div class="card border-info" style="width: 32rem;">
+                <div class="card-body">
+                    <p class="text-uppercase small mb-2"><strong>Total Reports Made by Parish</strong></p>
+                </div>
+                <hr class="my-0">
+                <div class="card-body">
+                    <canvas id="barChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="w-100"></div>
+
+        <div class = "col">
+            <div class="card border-info" style="width: 32rem;">
+                <div class="card-body">
+                    <p class="text-uppercase small mb-2"><strong>Division with Highest Crime Rate</strong></p>
+                </div>
+                <hr class="my-0">
+                <div class="card-body">
+                    <canvas id="barChart"></canvas>
+                </div>
+            </div>
+            <br>
+        </div>
+        <div class="col">
+            <div class="card border-info" style="width: 32rem;">
+                <div class="card-body">
+                    <p class="text-uppercase small mb-2"><strong>Frequency of Each Crime</strong></p>
+                </div>
+                <hr class="my-0">
+                <div class="card-body">
+                    <canvas id="barChart"></canvas>
+                </div>
+            </div>
+        </div>
+         
+    </div>
+    </form>
+  </div> 
+{% endblock %} 
+
+
+

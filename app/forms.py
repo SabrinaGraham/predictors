@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SelectField, SubmitField
+from wtforms import StringField, PasswordField, BooleanField, SelectField, SubmitField, TextAreaField, DateField, TimeField
 from wtforms.validators import DataRequired, InputRequired, ValidationError
 import phonenumbers
 from flask_bootstrap import Bootstrap
@@ -29,3 +29,10 @@ class PhoneForm(FlaskForm):
                 raise ValueError()
         except (phonenumbers.phonenumberutil.NumberParseException, ValueError):
             raise ValidationError('Invalid phone number')
+class ReportForm(FlaskForm):
+    division = SelectField('Parish', validators=[DataRequired()], choices=parishlst)
+    city = TextAreaField('City/Town', validators=[DataRequired()])
+    crime = SelectField('Type of Crime', validators=[DataRequired()], choices=crimelst)
+    date = DateField('Date of Crime', validators=[DataRequired()])
+    time = TimeField('Estimated Time of Crime', validators=[DataRequired()])
+    details = TextAreaField('Details of Crime', validators=[DataRequired()])
