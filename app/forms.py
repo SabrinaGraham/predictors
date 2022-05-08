@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SelectField, SubmitField, TextAreaField, DateField, TimeField
 from wtforms.validators import DataRequired, InputRequired, ValidationError
 import phonenumbers
-from flask_bootstrap import Bootstrap
+#from flask_bootstrap import Bootstrap
 
 parishlst=["--Select a parish--","Kingston","St.Andrew","Portland", "St.Thomas","St.Catherine", "St.Mary", "St.Ann", "Manchester", "Clarendon", "Hanover", "Westmoreland", "St.James", "Trelawny", "St.Elizabeth"]
 monthlst=["--Select a month--","January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
@@ -18,17 +18,19 @@ class PredictForm(FlaskForm):
     month= SelectField('Month', validators=[DataRequired()], choices=monthlst)
     crime= SelectField('Type of Crime', validators=[DataRequired()], choices=crimelst)
 
-class PhoneForm(FlaskForm):
-    phone = StringField('Phone', validators=[DataRequired()])
-    submit = SubmitField('Submit')
+#class PhoneForm(FlaskForm):
+#    phone = StringField('Phone', validators=[DataRequired()])
+#    submit = SubmitField('Submit')
 
-    def validate_phone(self, phone):
-        try:
-            p = phonenumbers.parse(phone.data)
-            if not phonenumbers.is_valid_number(p):
-                raise ValueError()
-        except (phonenumbers.phonenumberutil.NumberParseException, ValueError):
-            raise ValidationError('Invalid phone number')
+#    def validate_phone(self, phone):
+#        try:
+#            p = phonenumbers.parse(phone.data)
+#            if not phonenumbers.is_valid_number(p):
+#                raise ValueError()
+#        except (phonenumbers.phonenumberutil.NumberParseException, ValueError):
+#            raise ValidationError('Invalid phone number')
+
+
 class ReportForm(FlaskForm):
     division = SelectField('Parish', validators=[DataRequired()], choices=parishlst)
     city = TextAreaField('City/Town', validators=[DataRequired()])
