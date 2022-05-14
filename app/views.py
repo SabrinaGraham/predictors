@@ -16,7 +16,7 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
-
+import pickle
 ###
 # Routing for your application.
 ###
@@ -106,46 +106,39 @@ def show_phone():
 
 @app.route('/predict', methods=['GET', 'POST'])
 def predict():
-    #if current_user.is_authenticated:
-        # if user is already logged in, just redirect them to our secure page
-        # or some other page like a dashboard
-        #return redirect(url_for('secure_page'))
-
-    # Here we use a class of some kind to represent and validate our
-    # client-side form data. For example, WTForms is a library that will
-    # handle this for us, and we use a custom LoginForm to validate.
+    div_arr= ['Allman Town', 'Barbican', 'Belfield', 'Black River' , 'Braeton', 'Bridgeport', 'Browns Town', 'Buff Bay', 'Cassia Park', 'Cedar Valley', 'Chancery Hill', 'Chester Castle', 'Christiana', 'De La Vega City', 'Denham Town', 'Duhaney Park', 'Edgewater', 'Ensom City', 'Falmouth', 'Frome', 'Gordon Town', 'Greater Portmore North', 'Green Island', 'Greenwich Town', 'Gregory Park', 'Hagley Park', 'Harbour View', 'Havendale', 'Hayes', 'Hellshire', 'Highgate', 'Hopewell', 'Independent City', 'Junction', 'Kintyre', 'Lacovia', 'Lauriston', 'Lawrence Tavern', 'Lluidas Vale', 'Lorrimers', 'Lucea', 'Mandeville', 'Martha Brae', 'Mavis Bank', 'Maxfield Park', 'May Pen East', 'May Pen North', 'Mile Gully', 'Mocho', 'Molynes Gardens', 'Mona', 'Moneague', 'Montego Bay Central', 'Montego Bay North', 'Montego Bay North East', 'Montego Bay South East', 'Montego Bay West', 'Morant Bay', 'Negril', 'Norbrook', 'Ocho Ríos', 'Old Harbour Central', 'Old Harbour North', 'Olympic Gardens', 'Oracabessa','Papine', 'Payne Lands', 'Petersfield', 'Point Hill', 'Port Antonio', 'Port Maria', 'Portmore Pines', 'Porus', 'Race Course', 'Rae Town', 'Red Hills', 'Richmond', 'Richmond', 'Rocky Point', 'Saint Anns Bay', 'Sandy Bay', 'Santa Cruz', 'Savanna-La-Mar', 'Savanna-La-Mar North', 'Seaforth', 'Seaview Gardens', 'Sherwood Content', 'Spanish Town', 'Springfield', 'Spur Tree', 'Stony Hill', 'Tivali Gardens', 'Trafalgar', 'Trench Town', 'Twickenham Park', 'Vineyard Town', 'Waterford', 'Waterhouse', 'Waterloo', 'Whitehall', 'Yallahs']
+    model = pickle.load(open('model.pkl', 'rb'))
     form = PredictForm()
     # Login and validate the user.
-    if form.validate_on_submit():
-        # Query our database to see if the username and password entered
-        # match a user that is in the database.
-        division= form.division.data
-        month = form.month.data
-        crime = form.crime.data
+    if request.method == "POST":
+        if form.validate_on_submit():
+            division= form.division.data
+            month = form.month.data
+            crime = form.crime.data
+            
+            index = div_arr.index(division)
+            new_arr= [0]*100
+            new_arr[index] = 1
+            new_arr.insert(0, month)
+            new_arr.insert(1, crime)
 
-        # user = UserProfile.query.filter_by(username=username, password=password)\
-        # .first()
-        # or
-        """
-        user = UserProfile.query.filter_by(username=username).first()
+            prediction = model.predict([new_arr])
+            output = round(prediction[0], 5) 
+            output = output*100
+            key1 = 'rate ≥ 12.5% ----> [HOTSPOT ZONE]'
+            key2 = '12.49% ≤ rate ≤ 9% ----> [MODERATE ZONE]'
+            key3 = '8.99% ≤ rate ≤ 5% ----> [NEUTRAL ZONE]'
+            key4 = 'rate < 5% ----> [SAFE ZONE]'
+            flash('Crime rate prediction is: {}%'.format(output))
+            flash(key1)
+            flash(key2)
+            flash(key3)
+            flash(key4)
+            return redirect(url_for("predict"))
+            
+        flash_errors(form)
+    return render_template('predict_form.html', form=form)
 
-        if user is not None and check_password_hash(user.password, password):
-            remember_me = False
-
-            if 'remember_me' in request.form:
-                remember_me = True
-
-            # If the user is not blank, meaning if a user was actually found,
-            # then login the user and create the user session.
-            # user should be an instance of your `User` class
-            login_user(user, remember=remember_me)
-
-            flash('Logged in successfully.', 'success')
-
-            next_page = request.args.get('next')
-            return redirect(next_page or url_for('home'))
-        else:
-            flash('Username or Password is incorrect.', 'danger')"""
 
     flash_errors(form)
     return render_template('predict_form.html', form=form)

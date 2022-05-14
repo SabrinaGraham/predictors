@@ -5,20 +5,19 @@
 
 {% block main %}
   <div class="login-form text-center">
-    <h2 class="h3 mb-3 fw-normal">Dashboard</h2>
+    <h2 class="h3 mb-3 fw-normal">Analytics</h2>
     {% include 'flash_messages.html' %}
     <form action="{{ url_for('dashboard', next=request.args.get('next')) }}" method="post">
 
-    <div class="container">
-        <div class="row">
+    <div class="row">
             <div class = "col">
                 <div class="card border-info" style="width: 32rem;">
                     <div class="card-body">
-                        <p class="text-uppercase small mb-2"><strong>Parish with Most Overall Crime</strong></p>
+                        <h5 class="card-title"><strong>Parish with the Most Crime Reports</strong></h5>
                     </div>
                     <hr class="my-0">
                     <div class="card-body">
-                        <canvas id="barChart"></canvas>
+                        <img class="card-img-bottom" src="static/images/parish-crime-reports.png" alt="Parish crime report graph">
                     </div>
                 </div>
             </div>
@@ -27,11 +26,11 @@
         <div class="col">
             <div class="card border-info" style="width: 32rem;">
                 <div class="card-body">
-                    <p class="text-uppercase small mb-2"><strong>Total Reports Made by Parish</strong></p>
+                    <h5 class="card-title"><strong>Division with the Most Crime Reports</strong></h5>
                 </div>
                 <hr class="my-0">
                 <div class="card-body">
-                    <canvas id="barChart"></canvas>
+                    <img class="card-img-bottom" src="static/images/division-crime-reports.png" alt="Division crime report graph">
                 </div>
             </div>
         </div>
@@ -41,11 +40,11 @@
         <div class = "col">
             <div class="card border-info" style="width: 32rem;">
                 <div class="card-body">
-                    <p class="text-uppercase small mb-2"><strong>Division with Highest Crime Rate</strong></p>
+                    <h5 class="card-title"><strong>Division with Highest Crime Rate</strong></h5>
                 </div>
                 <hr class="my-0">
                 <div class="card-body">
-                    <canvas id="barChart"></canvas>
+                    <img class="card-img-bottom" src="static/images/division-crime-rate.png" alt="Division crime rate graph">
                 </div>
             </div>
             <br>
@@ -53,11 +52,11 @@
         <div class="col">
             <div class="card border-info" style="width: 32rem;">
                 <div class="card-body">
-                    <p class="text-uppercase small mb-2"><strong>Frequency of Each Crime</strong></p>
+                    <h5 class="card-title"><strong>Frequency of Crimes Reported</strong></h5>
                 </div>
                 <hr class="my-0">
                 <div class="card-body">
-                    <canvas id="barChart"></canvas>
+                    <img class="card-img-bottom" src="static/images/crimetype-count.png" alt="Crime type frequency graph">
                 </div>
             </div>
         </div>
