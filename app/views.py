@@ -9,7 +9,7 @@ from __future__ import division
 from app import app, db, login_manager
 from flask import render_template, request, redirect, url_for, flash, session
 from flask_login import login_user, logout_user, current_user, login_required
-from app.forms import LoginForm, PredictForm, ReportForm
+from app.forms import LoginForm, PredictForm, ReportForm, CreateForm
 from app.models import UserProfile
 from werkzeug.security import check_password_hash
 from bs4 import BeautifulSoup
@@ -43,10 +43,10 @@ def secure_page():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if current_user.is_authenticated:
+    #if current_user.is_authenticated:
         # if user is already logged in, just redirect them to our secure page
         # or some other page like a dashboard
-        return redirect(url_for('secure_page'))
+    #    return redirect(url_for('secure_page'))
 
     # Here we use a class of some kind to represent and validate our
     # client-side form data. For example, WTForms is a library that will
@@ -56,43 +56,49 @@ def login():
     if form.validate_on_submit():
         # Query our database to see if the username and password entered
         # match a user that is in the database.
-        username = form.username.data
-        password = form.password.data
+        username = form.phone.data
+        #password = form.password.data
 
         # user = UserProfile.query.filter_by(username=username, password=password)\
         # .first()
         # or
-        user = UserProfile.query.filter_by(username=username).first()
+        #user = UserProfile.query.filter_by(username=username).first()
 
-        if user is not None and check_password_hash(user.password, password):
-            remember_me = False
+        #if user is not None:
+        #    remember_me = False
 
-            if 'remember_me' in request.form:
-                remember_me = True
+        #if 'remember_me' in request.form:
+        #    remember_me = True
 
             # If the user is not blank, meaning if a user was actually found,
             # then login the user and create the user session.
             # user should be an instance of your `User` class
-            login_user(user, remember=remember_me)
+            #login_user(user, remember=remember_me)
 
-            flash('Logged in successfully.', 'success')
+        #    flash('Logged in successfully.', 'success')
 
-            next_page = request.args.get('next')
-            return redirect(next_page or url_for('home'))
-        else:
-            flash('Username or Password is incorrect.', 'danger')
+        #    next_page = request.args.get('next')
+        #return redirect(next_page or url_for('verify'))
+        #else:
+        #    flash('Username or Password is incorrect.', 'danger')
 
-    flash_errors(form)
-    return render_template('login.html', form=form)
+    #flash_errors(form)
+    #return render_template('login.html', form=form)
+    return render_template('login.html')
 
 @app.route('/create-account', methods=['GET', 'POST'])
 def create():
-    form = PhoneForm()
+    form = CreateForm()
     if form.validate_on_submit():
         session['phone'] = form.phone.data
         return redirect(url_for('show_phone'))
     return render_template('create_account.html', form=form)
 
+@app.route('/verify', methods=['GET', 'POST'])
+def verify():
+    #number= request.form['phone']
+    #print(number)
+    return render_template('verify.html')
 
 @app.route('/showphone')
 def show_phone():

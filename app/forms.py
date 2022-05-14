@@ -9,9 +9,14 @@ monthlst=["--Select a month--","January", "February", "March", "April", "May", "
 crimelst=["--Select a crime type--","Homocide","Assault and Battery", "Kidnaping", "Sex Crimes", "Traffic Offenses", "Theft Crimes", "Drug Crimes", "Fraud"]
 
 class LoginForm(FlaskForm):
-    username = StringField('Username', validators=[InputRequired()])
-    password = PasswordField('Password', validators=[InputRequired()])
+    phone= StringField('Phone', validators=[DataRequired()])
+    #password = PasswordField('Password', validators=[InputRequired()])
     remember_me = BooleanField('Remember me')
+
+class CreateForm(FlaskForm):
+    username = StringField('Username', validators=[InputRequired()])
+    phone= StringField('Phone', validators=[DataRequired()])
+    
 
 class PredictForm(FlaskForm):
     division= SelectField('Parish', validators=[DataRequired()], choices=parishlst)

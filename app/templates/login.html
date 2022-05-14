@@ -1,52 +1,37 @@
+{% extends 'base.html' %}
 
-  <!--div class="login-form text-center">
+{% block main %}
+  <div class="login-form text-center">
     <h2 class="h3 mb-3 fw-normal">Please Log in</h2>
     {% include 'flash_messages.html' %}
-    <form action="{{ url_for('login', next=request.args.get('next')) }}" method="post">
+
+    <form action="{{ url_for('verify', next=request.args.get('next')) }}" method="post">
       {{ form.csrf_token }}
-      <div class="form-floating">
-        {{ form.username(class='form-control', placeholder="Enter your username") }}
-        {{ form.username.label }}
+
+      <div class="d-flex column">
+        <div class="form-floating w-100">
+          {{ form.phone(class='form-control', placeholder="+1 (XXX) XXX-XXXX") }}
+          {{ form.phone.label }}
+        </div>
+        <div class="d-flex align-items-center">
+          <a href="#" data-toggle="tooltip" data-placement="top" title="N.B. Phone number should take the format (876)XXX-XXXX"><?xml version="1.0" encoding="UTF-8"?>
+            <svg xmlns="http://www.w3.org/2000/svg" id="Filled" viewBox="0 0 24 24" width="20" height="20"><path d="M12,24A12,12,0,1,0,0,12,12.013,12.013,0,0,0,12,24ZM12,5a1.5,1.5,0,1,1-1.5,1.5A1.5,1.5,0,0,1,12,5Zm-1,5h1a2,2,0,0,1,2,2v6a1,1,0,0,1-2,0V12H11a1,1,0,0,1,0-2Z"/></svg>
+          </a>      
+        </div>
       </div>
-      <div class="form-floating">
-        {{ form.password(class='form-control', placeholder="Password") }}
-        {{ form.password.label }}
-      </div>
+
       <div class="form-group">
         {{ form.remember_me }} {{ form.remember_me.label }}
       </div>
+
+      <br>
       <button type="submit" name="submit" class="w-100 btn btn-dark btn-block">Log in</button>
     </form>
-    <a href="{{url_for('create')}}">Create Account</a>
-  </div-->
+
+    <br>
+    <short class="muted float-left">Don't have an account?</short>
+    <a class="float-right text-info" href="{{url_for('create')}}">Create Account</a>
+  </div>
   
-  {% extends 'base.html' %}
-  {% from '/form.html' import render_form %}
-  
-  {% block title %}Flask Phone Number Input Demo{% endblock %}
-  
-  {% block content %}
-  <h1>Flask Phone Number Input Demo</h1>
-  {{ render_form(form) }}
-  {% endblock %}
-  
-  {% block scripts %}
-  {{ super() }}
-  <script>
-      var wtf_phone_field = document.getElementById('phone');
-      wtf_phone_field.style.position = 'absolute';
-      wtf_phone_field.style.top = '-9999px';
-      wtf_phone_field.style.left = '-9999px';
-      wtf_phone_field.parentElement.insertAdjacentHTML('beforeend', '<div><input type="tel" id="_phone"></div>');
-      var fancy_phone_field = document.getElementById('_phone');
-      var fancy_phone_iti = window.intlTelInput(fancy_phone_field, {
-          separateDialCode: true,
-          utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/16.0.4/js/utils.js",
-      });
-      fancy_phone_iti.setNumber(wtf_phone_field.value);
-      fancy_phone_field.addEventListener('blur', function() {
-          wtf_phone_field.value = fancy_phone_iti.getNumber();
-      });
-  </script>
-  
+
 {% endblock %}

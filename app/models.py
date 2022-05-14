@@ -1,3 +1,4 @@
+from sqlalchemy import ForeignKey
 from . import db
 from werkzeug.security import generate_password_hash
 
@@ -9,17 +10,12 @@ class UserProfile(db.Model):
     # to `user_profiles` or some other name.
     __tablename__ = 'user_profiles'
 
-    id = db.Column(db.Integer, primary_key=True)
-    first_name = db.Column(db.String(80))
-    last_name = db.Column(db.String(80))
-    username = db.Column(db.String(80), unique=True)
-    password = db.Column(db.String(255))
+    phone_no = db.Column(db.String, primary_key=True)
+    
 
-    def __init__(self, first_name, last_name, username, password):
-        self.first_name = first_name
-        self.last_name = last_name
-        self.username = username
-        self.password = generate_password_hash(password, method='pbkdf2:sha256')
+    def __init__(self, phone_no):
+        self.phone_no = phone_no
+       
 
     def is_authenticated(self):
         return True

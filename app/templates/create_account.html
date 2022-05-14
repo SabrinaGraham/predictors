@@ -6,14 +6,37 @@
     {% include 'flash_messages.html' %}
     <form action="{{ url_for('create', next=request.args.get('next')) }}" method="post">
       {{ form.csrf_token }}
-      <div class="form-floating">
-        {{ form.phone(class='form-control', placeholder="Enter phone") }}
-        {{ form.phone.label }}
+      <div class="d-flex column">
+        <div class="form-floating w-100">
+          {{ form.username(class='form-control', placeholder="username") }}
+          {{ form.username.label }}
+        </div>
+        <div class="d-flex align-items-center">
+          <a href="#" data-toggle="tooltip" data-placement="top" title="E.g. eagle-eye, anonymoususer1, etc."><?xml version="1.0" encoding="UTF-8"?>
+            <svg xmlns="http://www.w3.org/2000/svg" id="Filled" viewBox="0 0 24 24" width="20" height="20"><path d="M12,24A12,12,0,1,0,0,12,12.013,12.013,0,0,0,12,24ZM12,5a1.5,1.5,0,1,1-1.5,1.5A1.5,1.5,0,0,1,12,5Zm-1,5h1a2,2,0,0,1,2,2v6a1,1,0,0,1-2,0V12H11a1,1,0,0,1,0-2Z"/></svg>
+          </a>      
+        </div>
       </div>
-      <div class="form-floating">
-        {{ form.submit(class='form-control', placeholder="Enter phone") }}
-        {{ form.submit.label }}
+
+      <div class="d-flex column">
+        <div class="form-floating w-100">
+          {{ form.phone(class='form-control', placeholder="+1 (XXX) XXX-XXXX") }}
+          {{ form.phone.label }}
+        </div>
+        <div class="d-flex align-items-center">
+          <a href="#" data-toggle="tooltip" data-placement="top" title="N.B. Phone number should take the format (876)XXX-XXXX"><?xml version="1.0" encoding="UTF-8"?>
+            <svg xmlns="http://www.w3.org/2000/svg" id="Filled" viewBox="0 0 24 24" width="20" height="20"><path d="M12,24A12,12,0,1,0,0,12,12.013,12.013,0,0,0,12,24ZM12,5a1.5,1.5,0,1,1-1.5,1.5A1.5,1.5,0,0,1,12,5Zm-1,5h1a2,2,0,0,1,2,2v6a1,1,0,0,1-2,0V12H11a1,1,0,0,1,0-2Z"/></svg>
+          </a>      
+        </div>
       </div>
+
+      <br>
+      <button type="submit" name="submit" class="w-100 btn btn-dark btn-block">Submit</button>
+    </form>
+
+    <br>
+    <short class="muted float-left">Already have an account?</short>
+    <a class="float-right text-info" href="{{url_for('login')}}">Log In</a>
      
     </form>
    
