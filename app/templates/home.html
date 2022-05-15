@@ -5,6 +5,8 @@
         
 {% block main %}
 {% include 'flash_messages.html' %}
+<div class="container">
+  <h2> <strong> Welcome Home!</strong> </h2>
 <div class="p-5 mb-4 bg-light rounded-3" class="card-group">
     <div class="card" >
         <img class="card-img-to" src="static/images/crime-overview1.jpg" alt="analytics graphic">
@@ -21,8 +23,12 @@
     <div class="card" >
         <img class="card-img-top" src="static/images/crime-overview.png" alt="analytics graphic">
         <div class="card-body">
-          <h1 class="card-title" >How can you help</h1>
-          <p  class="lead">This demo app demonstrates the use of Flask-Login and Flask-Migrate extensions</p>
+          <h1 class="card-title" >How can you help?</h1>
+          <p  class="lead">>This application allows its users to contribute to the crime prevention and mitigation initiative within our country.
+            Users may utilize the crime reporting form to submit reports to the relevant security authorities for investigation and tracking. 
+            This allows for a more faster, efficient and convenient crime detection process. Therefore, the submission of crime reports 
+            is paramount to the cause!
+          </p>
           <a href="#" class="btn btn-dark">More</a>
         </div>
     </div>
@@ -30,12 +36,16 @@
     <div class="card" >
         <img class="card-img-top" src="static/images/crime-safe.jpg" alt="analytics graphic">
         <div class="card-body">
-          <h1 class="card-title" >How to stay safe</h1>
-          <p  class="lead">This demo app demonstrates the use of Flask-Login and Flask-Migrate extensions</p>
+          <h1 class="card-title" >How to stay safe?</h1>
+          <p  class="lead">The user's safety is of utmost importance and as such is our first priority in the implementation of this application. 
+            We encourage all our users and stakeholders to utilize the data and resources presented here for their safety and consideration. The app provides 
+            relevant crime information of specific divisions within Jamaica that the user can use as reference point and to remind them to stay vigilant in 
+            in crime prone areas. This is most useful to individuals with little to no knowledge of the respective communities.
+          </p>
           <a href="#" class="btn btn-dark">More</a>
         </div>
     </div>
-    
+ </div>   
 </div>
 
 {% endblock %}
