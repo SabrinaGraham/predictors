@@ -33,7 +33,7 @@ class PredictForm(FlaskForm):
 
 
 class ReportForm(FlaskForm):
-    division = SelectField('Parish', validators=[DataRequired()], choices=parishlst)
+    division = SelectField('Division', validators=[DataRequired()], choices=parishlst)
     city = TextAreaField('City/Town', validators=[DataRequired()])
     crime = SelectField('Type of Crime', validators=[DataRequired()], choices=crimelst)
     date = DateField('Date of Crime', validators=[DataRequired()])
