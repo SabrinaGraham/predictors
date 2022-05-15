@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SelectField, SubmitField, TextAreaField, DateField, TimeField
 from wtforms.validators import DataRequired, InputRequired, ValidationError
+from wtforms import validators
 import phonenumbers
 #from flask_bootstrap import Bootstrap
 
@@ -10,31 +11,19 @@ crimelst=[(0, "--Select a crime type--"),(1,"Aggravated Assault"),(2,'Larceny/Th
 
 
 class LoginForm(FlaskForm):
-    phone= StringField('Phone', validators=[DataRequired()])
-    #password = PasswordField('Password', validators=[InputRequired()])
+    email= StringField('Email', validators=[DataRequired()])
+    password = PasswordField('Password', validators=[InputRequired()])
     remember_me = BooleanField('Remember me')
 
 class CreateForm(FlaskForm):
-    username = StringField('Username', validators=[InputRequired()])
-    phone= StringField('Phone', validators=[DataRequired()])
-    
+    email = StringField('Email', validators=[InputRequired()])
+    password= PasswordField('Password', validators=[DataRequired()])
+    password2= PasswordField('Re-enter Password', [validators.DataRequired(), validators.EqualTo('password', message='Passwords must match!')])
 
 class PredictForm(FlaskForm):
     division= SelectField('Division', validators=[DataRequired()], choices=parishlst)
     month= SelectField('Month', validators=[DataRequired()], choices=monthlst, coerce=int)
     crime= SelectField('Type of Crime', validators=[DataRequired()], choices=crimelst, coerce=int)
-
-#class PhoneForm(FlaskForm):
-#    phone = StringField('Phone', validators=[DataRequired()])
-#    submit = SubmitField('Submit')
-
-#    def validate_phone(self, phone):
-#        try:
-#            p = phonenumbers.parse(phone.data)
-#            if not phonenumbers.is_valid_number(p):
-#                raise ValueError()
-#        except (phonenumbers.phonenumberutil.NumberParseException, ValueError):
-#            raise ValidationError('Invalid phone number')
 
 
 class ReportForm(FlaskForm):
@@ -44,3 +33,6 @@ class ReportForm(FlaskForm):
     date = DateField('Date of Crime', validators=[DataRequired()])
     time = TimeField('Estimated Time of Crime', validators=[DataRequired()])
     details = TextAreaField('Details of Crime', validators=[DataRequired()])
+
+class VerifyForm(FlaskForm):
+    code = StringField('Enter 6-digit Code', validators=[DataRequired()])

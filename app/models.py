@@ -10,11 +10,14 @@ class UserProfile(db.Model):
     # to `user_profiles` or some other name.
     __tablename__ = 'user_profiles'
 
-    phone_no = db.Column(db.String, primary_key=True)
+    userid = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String)
+    password = db.Column(db.String)
     
 
-    def __init__(self, phone_no):
-        self.phone_no = phone_no
+    def __init__(self, email, password):
+        self.email = email
+        self.password = generate_password_hash(password, method='pbkdf2:sha256')
        
 
     def is_authenticated(self):
@@ -35,3 +38,27 @@ class UserProfile(db.Model):
     def __repr__(self):
         return '<User %r>' %  self.username
 
+class Reports(db.Model):
+    # You can use this to change the table name. The default convention is to use
+    # the class name. In this case a class name of UserProfile would create a
+    # user_profile (singular) table, but if we specify __tablename__ we can change it
+    # to `user_profiles` or some other name.
+    __tablename__ = 'reports'
+
+    reportid = db.Column(db.Integer, primary_key=True)
+    userid = db.Column(db.Integer, db.ForeignKey('user_profiles.userid'))
+    division = db.Column(db.String)
+    city = db.Column(db.String)
+    crime = db.Column(db.String)
+    date = db.Column(db.String)
+    time = db.Column(db.String)
+    details = db.Column(db.String)
+
+    def __init__(self, userid, division, city, crime, date, time, details):
+        self.userid = userid
+        self.division = division
+        self.city = city
+        self.crime = crime
+        self.date = date
+        self.time = time
+        self.details = details
