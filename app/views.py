@@ -179,10 +179,7 @@ def predict():
 
     flash_errors(form)
     return render_template('predict_form.html', form=form)
-"""@app.route("/dashboard")
-def dashboard():
-    return render_template('dashboard.html')
-"""
+
 @app.route("/news")
 def news():
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
@@ -221,7 +218,7 @@ def report():
     form = ReportForm()
     return render_template('report.html', form=form)
 
-@app.route('/dashboard',methods=['GET','POST'])
+@app.route('/dashboard')
 def dashboard():
     """Initialization of dashboard form"""
     return render_template('dashboard.html')
