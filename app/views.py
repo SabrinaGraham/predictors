@@ -194,7 +194,7 @@ def verify():
 
                     db.session.add(form_data)
                     db.session.commit()
-                    flash('Account successfully created!')
+                    flash('Account successfully created!', 'success')
                     return redirect(url_for('login'))
 
     return render_template('verify.html', form=form)
