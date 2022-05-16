@@ -230,6 +230,9 @@ def predict():
             flash(key2)
             flash(key3)
             flash(key4)
+            flash('Division selected: {}'.format(division))
+            flash('Month selected: Month {}'.format(month))
+            flash('Type of crime selected: Crime number {}'.format(crime))
             return redirect(url_for("predict"))
             
         flash_errors(form)
