@@ -165,10 +165,10 @@ def predict():
             prediction = model.predict([new_arr])
             output = round(prediction[0], 5) 
             output = output*100
-            key1 = 'rate ≥ 12.5% ----> [HOTSPOT ZONE]'
-            key2 = '12.49% ≤ rate ≤ 9% ----> [MODERATE ZONE]'
-            key3 = '8.99% ≤ rate ≤ 5% ----> [NEUTRAL ZONE]'
-            key4 = 'rate < 5% ----> [SAFE ZONE]'
+            key1 = 'rate ≥ 25% ----> [HOTSPOT ZONE]'
+            key2 = '24.99% ≥ rate ≥ 18% ----> [MODERATE ZONE]'
+            key3 = '17.99% ≥ rate ≥ 10% ----> [NEUTRAL ZONE]'
+            key4 = 'rate < 10% ----> [SAFE ZONE]'
             flash('Crime rate prediction is: {}%'.format(output))
             flash(key1)
             flash(key2)
