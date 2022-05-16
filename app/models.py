@@ -2,6 +2,7 @@ from sqlalchemy import ForeignKey
 from . import db
 from werkzeug.security import generate_password_hash
 
+num = 1
 
 class UserProfile(db.Model):
     # You can use this to change the table name. The default convention is to use
@@ -9,16 +10,22 @@ class UserProfile(db.Model):
     # user_profile (singular) table, but if we specify __tablename__ we can change it
     # to `user_profiles` or some other name.
     __tablename__ = 'user_profiles'
+    __table_args__ = (
+        db.UniqueConstraint('email', name='unique_email'),
+    )
 
     userid = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String)
     password = db.Column(db.String)
     
+    
 
     def __init__(self, email, password):
+        #global num
+        #self.userid = num
         self.email = email
         self.password = generate_password_hash(password, method='pbkdf2:sha256')
-       
+        #num=num+1
 
     def is_authenticated(self):
         return True
@@ -31,12 +38,12 @@ class UserProfile(db.Model):
 
     def get_id(self):
         try:
-            return unicode(self.id)  # python 2 support
+            return unicode(self.userid)  # python 2 support
         except NameError:
-            return str(self.id)  # python 3 support
+            return str(self.userid)  # python 3 support
 
     def __repr__(self):
-        return '<User %r>' %  self.username
+        return '<User %r>' %  self.userid
 
 class Reports(db.Model):
     # You can use this to change the table name. The default convention is to use
@@ -54,7 +61,8 @@ class Reports(db.Model):
     time = db.Column(db.String)
     details = db.Column(db.String)
 
-    def __init__(self, userid, division, city, crime, date, time, details):
+    """
+    def __init__(self, division, city, crime, date, time, details):
         self.userid = userid
         self.division = division
         self.city = city
@@ -62,3 +70,4 @@ class Reports(db.Model):
         self.date = date
         self.time = time
         self.details = details
+    """

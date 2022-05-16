@@ -65,9 +65,8 @@ def login():
         email = form.email.data
         password = form.password.data
 
-        user = UserProfile.query.filter_by(email=email, password=password).first()
-        # or
-        #user = UserProfile.query.filter_by(username=username).first()
+        user = UserProfile.query.filter_by(email=email).first()
+
 
         if user is not None and check_password_hash(user.password, password):
             remember_me = False
@@ -137,7 +136,7 @@ def verify():
 
                 db.session.add(form_data)
                 db.session.commit()
-                return redirect(url_for('dashboard'))
+                return redirect(url_for('login'))
 
     return render_template('verify.html', form=form)
 
