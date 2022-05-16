@@ -6,13 +6,14 @@ This file creates your application.
 """
 
 from __future__ import division
+from http.client import UNAUTHORIZED
 
 import flask_login
 from app import app, db, login_manager
 from flask import render_template, request, redirect, url_for, flash, session
 from flask_login import login_user, logout_user, current_user, login_required
 from app.forms import LoginForm, PredictForm, ReportForm, CreateForm, VerifyForm
-from app.models import UserProfile, Reports
+from app.models import UserProfile, Reports, Admin
 from werkzeug.security import check_password_hash
 from bs4 import BeautifulSoup
 from selenium import webdriver
@@ -62,6 +63,26 @@ def notify():
 
     return render_template('notification.html', report=user_reports)
 
+@app.route('/show_reports')
+@login_required
+def showReports():
+    if 'user' in session:
+        u = session['user']
+        session.pop('user',None)
+        if u == 'admin':
+            reports = Reports.query.all()
+            records=[{"id":r.reportid,
+            "division":r.division,
+            "city":r.city,
+            "crime":r.crime,
+            "date":r.date,
+            "time":r.time,
+            "details":r.details} for r in reports]
+            session['user']='admin'
+        if u=='reg':
+            session['user']='reg'
+            return ('UNAUTHORIZED', 'danger')
+    return render_template('show_reports.html', report=records)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -81,24 +102,42 @@ def login():
         email = form.email.data
         password = form.password.data
 
+        
+
         user = UserProfile.query.filter_by(email=email).first()
+        
+        
 
 
         if user is not None and check_password_hash(user.password, password):
+            session['user']='reg'
             remember_me = False
 
             if 'remember_me' in request.form:
                 remember_me = True
 
+        
+
             # If the user is not blank, meaning if a user was actually found,
             # then login the user and create the user session.
             # user should be an instance of your `User` class
             login_user(user, remember=remember_me)
-
-            flash('Logged in successfully.', 'success')
-
             next_page = request.args.get('next')
             return redirect(next_page or url_for('home'))
+        
+        if user is None:
+            user = Admin.query.filter_by(email=email).first()
+            
+            session['user']='admin'
+            remember_me=False
+            if user is not None and check_password_hash(user.password, password):
+                print('admin pswd: ',user.email)
+                remember_me = False
+                login_user(user)
+                flash('Logged in successfully.', 'success')
+
+                next_page = request.args.get('next')
+                return redirect(next_page or url_for('showReports'))
         else:
             flash('Username or Password is incorrect.', 'danger')
 
@@ -112,49 +151,51 @@ def generateCode():
 @app.route('/create-account', methods=['GET', 'POST'])
 def create():
     form = CreateForm()
-    if form.validate_on_submit():
-        email=form.email.data
-        password=form.password.data
-        password2=form.password2.data
-        code = generateCode()
-        session['response']=str(code)
-        data.append(email) 
-        data.append(password)
-        subject= "Email Verification Code"
-        name = "Crime Predictors"
-        msg = Message(subject, sender =(name,'noreply@demo.com'), recipients=[email])
-        msg.body = 'Your verification code is ' + str(code)
-        print("hello3")
-        mail.send(msg)
-        return redirect(url_for('verify'))
+    if request.method == "POST":
+        if form.validate_on_submit():
+            email=form.email.data
+            password=form.password.data
+            password2=form.password2.data
+            code = generateCode()
+            session['response']=str(code)
+            data.append(email) 
+            data.append(password)
+            subject= "Email Verification Code"
+            name = "Crime Predictors"
+            msg = Message(subject, sender =(name,'noreply@demo.com'), recipients=[email])
+            msg.body = 'Your verification code is ' + str(code)
+            print("hello3")
+            mail.send(msg)
+            return redirect(url_for('verify'))
+        flash_errors(form)
     return render_template('create_account.html', form=form)
 
 @app.route('/verify', methods=['GET', 'POST'])
 def verify():
     form=VerifyForm()
-    if form.validate_on_submit():
-        number= request.form['code']
-        print(number)
+    if request.method == "POST":
+        if form.validate_on_submit():
+            number= request.form['code']
+            print(number)
 
-        if 'response' in session:
+            if 'response' in session:
             
-            email=data[0]
-            password=data[1]
-            s = session['response']
-            session.pop('response',None)
-            if s == str(number):
+                email=data[0]
+                password=data[1]
+                s = session['response']
+                session.pop('response',None)
+                if s == str(number):
                 
-                print(email, password)
+                    form_data=UserProfile(email, password)
+                    #form_data.email=email
+                    #form_data.password=password
+                    #form_data=Admin(email, password)
+                    
 
-                form_data=UserProfile(email, password)
-                #form_data.email=email
-                #form_data.password=password
-                
-
-                db.session.add(form_data)
-                db.session.commit()
-                flash('Account successfully created!')
-                return redirect(url_for('login'))
+                    db.session.add(form_data)
+                    db.session.commit()
+                    flash('Account successfully created!')
+                    return redirect(url_for('login'))
 
     return render_template('verify.html', form=form)
 

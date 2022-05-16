@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block tool %} 
+    <!--a href="{{ url_for('predict') }}"  class="btn btn-success">Prediction Tool</a-->
+{% endblock%}
+
+{% block main %}
+  <div class="">
+    <div>
+        <h2 class="card-title text-center">Incident Reports</h2>
+        {% include 'flash_messages.html' %}
+        <br><br>
+    </div>
+    
+    <div class="p-5 mb-4 bg-light rounded-3">
+
+      <ul style="list-style-type: none;">
+        <div>
+        {% for r in report %}
+            <div class="card p-5">
+
+                <li class="lead">Report ID: {{r['id']}}</li>
+                <li>Division: {{r['division']}}</li>
+                <li>City: {{r['city']}}</li>
+                <li>Crime: {{r['crime']}}</li>
+                <li>Date of Crime: {{r['date']}}</li>
+                <li>Time of Crime: {{r['time']}}</li>
+                <li>Details of Crime: {{r['details']}}</li>
+                <br>
+                <button type="button" name="check" class="w-25 btn btn-info btn-block text-right">Adjust Progress</button> 
+            </div>
+            <br>
+        {% endfor %}
+        </div>
+    </ul>
+    </div>
+  </div> 
+{% endblock %} 
+
+
+
+

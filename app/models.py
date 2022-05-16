@@ -71,3 +71,35 @@ class Reports(db.Model):
         self.time = time
         self.details = details
     
+
+class Admin(db.Model):
+    # You can use this to change the table name. The default convention is to use
+    # the class name. In this case a class name of UserProfile would create a
+    # user_profile (singular) table, but if we specify __tablename__ we can change it
+    # to `user_profiles` or some other name.
+    __tablename__ = 'admin'
+    __table_args__ = (
+        db.UniqueConstraint('email', name='unique_mail'),
+    )
+
+    adminid = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String)
+    password = db.Column(db.String)
+
+    def __init__(self, email, password):
+        self.email = email
+        self.password = generate_password_hash(password, method='pbkdf2:sha256')
+    
+    def is_authenticated(self):
+        return True
+
+    def is_active(self):
+        return True
+    def get_id(self):
+        try:
+            return unicode(self.adminid)  # python 2 support
+        except NameError:
+            return str(self.adminid)  # python 3 support
+
+    def __repr__(self):
+        return '<User %r>' %  self.adminid
