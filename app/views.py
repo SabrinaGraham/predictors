@@ -56,6 +56,12 @@ def getReports():
 @app.route('/notification')
 @login_required
 def notify():
+    if 'user' in session:
+        u = session['user']
+        session.pop('user',None)
+        if u == 'admin':
+            session['user']='admin'
+            return ('NOT ALLOWED','danger')
     
     """Render a secure page on our website that only logged in users can access."""
     user_reports=getReports()
@@ -246,12 +252,13 @@ def predict():
 def news():
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
     driver.get('https://www.jamaicaobserver.com/section/latest-news/')
-
+    driver.minimize_window()
     results = []
 
     content = driver.page_source
-    soup = BeautifulSoup(content, features="html.parser")
     driver.quit()
+    soup = BeautifulSoup(content, features="html.parser")
+    #driver.quit()
 
     for element in soup.findAll(attrs='col-12 col-md-6 article-wrapper'):
         image=element.find('img').get('src') 
@@ -277,6 +284,12 @@ def news():
 @login_required
 def report():
     """Initialization of report form."""
+    if 'user' in session:
+        u = session['user']
+        session.pop('user',None)
+        if u == 'admin':
+            session['user']='admin'
+            return redirect(url_for('showReports'))
     form = ReportForm()
     
     if form.validate_on_submit():
