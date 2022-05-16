@@ -4,18 +4,33 @@
 {% endblock%}
 
 {% block main %}
-  <div class="text-center">
+  <div class="">
     <div>
-        <h2 class="card-title">Notifications</h2>
+        <h2 class="card-title text-center">Notifications</h2>
         <br><br>
     </div>
     
-    <div class="card p-5 mb-4 bg-light rounded-3">
-        <div class="card-body">
-        
-            <p  class="lead">This is a notification about a report you made recently</p>
-            <a href="#" class="btn btn-dark" >More</a>
+    <div class="p-5 mb-4 bg-light rounded-3">
+
+      <ul style="list-style-type: none;">
+        <div>
+        {% for r in report %}
+            <div class="card p-5">
+
+                <li class="lead">Report ID: {{r['id']}}</li>
+                <li>Division: {{r['division']}}</li>
+                <li>City: {{r['city']}}</li>
+                <li>Crime: {{r['crime']}}</li>
+                <li>Date of Crime: {{r['date']}}</li>
+                <li>Time of Crime: {{r['time']}}</li>
+                <li>Details of Crime: {{r['details']}}</li>
+                <br>
+                <button type="button" name="check" class="w-25 btn btn-info btn-block text-right">Check Progress</button> 
+            </div>
+            <br>
+        {% endfor %}
         </div>
+    </ul>
     </div>
   </div> 
 {% endblock %} 

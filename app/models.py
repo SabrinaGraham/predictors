@@ -61,8 +61,8 @@ class Reports(db.Model):
     time = db.Column(db.String)
     details = db.Column(db.String)
 
-    """
-    def __init__(self, division, city, crime, date, time, details):
+    
+    def __init__(self, division, city, crime, date, time, details, userid):
         self.userid = userid
         self.division = division
         self.city = city
@@ -70,4 +70,4 @@ class Reports(db.Model):
         self.date = date
         self.time = time
         self.details = details
-    """
+    

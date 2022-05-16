@@ -41,12 +41,26 @@ def about():
     return render_template('about.html', name="Mary Jane")
 
 
+def getReports():
+    reports = Reports.query.filter_by(userid=current_user.get_id()).all()
+    records=[{"id":r.reportid,
+        "division":r.division,
+        "city":r.city,
+        "crime":r.crime,
+        "date":r.date,
+        "time":r.time,
+        "details":r.details} for r in reports]
+    return records
+
 @app.route('/notification')
 @login_required
 def notify():
     
     """Render a secure page on our website that only logged in users can access."""
-    return render_template('notification.html')
+    user_reports=getReports()
+
+
+    return render_template('notification.html', report=user_reports)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -101,6 +115,7 @@ def create():
     if form.validate_on_submit():
         email=form.email.data
         password=form.password.data
+        password2=form.password2.data
         code = generateCode()
         session['response']=str(code)
         data.append(email) 
@@ -219,26 +234,27 @@ def news():
 def report():
     """Initialization of report form."""
     form = ReportForm()
-    """
-    if form.validate_on_submit:
-        form_data=Reports()
-        form_data.division=form.division.data
-        form_data.city=form.city.data
-        form_data.date=form.date.data
-        form_data.time=form.time.data
-        form_data.details=form.details.data
-        form_data.crime=form.crime.data
+    
+    if form.validate_on_submit():
+        
+        division=form.division.data
+        city=form.city.data
+        date=form.date.data
+        time=form.time.data
+        details=form.details.data
+        crime=form.crime.data
 
         if current_user.is_authenticated():
             uid = current_user.get_id()
-            form_data.userid=uid
-                
+            userid=uid
+
+        form_data=Reports(division, city, crime, date, time, details, userid)   
 
         db.session.add(form_data)
         db.session.commit()
         flash('Report successfully logged!')
         return redirect(url_for('notify'))
-        """
+        
 
     return render_template('report.html', form=form)
 
