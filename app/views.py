@@ -63,7 +63,7 @@ def notify():
             session['user']='admin'
             return ('NOT ALLOWED','danger')
     
-    """Render a secure page on our website that only logged in users can access."""
+    
     user_reports=getReports()
 
 
