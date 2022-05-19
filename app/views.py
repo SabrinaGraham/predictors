@@ -9,6 +9,7 @@ from __future__ import division
 from http.client import UNAUTHORIZED
 
 import flask_login
+import os
 from app import app, db, login_manager
 from flask import render_template, request, redirect, url_for, flash, session
 from flask_login import login_user, logout_user, current_user, login_required
@@ -259,6 +260,12 @@ def predict():
 
 @app.route("/news")
 def news():
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.binary_location = os.environ.get('GOOGLE_CHROME_BIN')
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_options.add_argument("--no-sandbox")
+
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
     driver.get('https://www.jamaicaobserver.com/section/latest-news/')
     driver.minimize_window()
