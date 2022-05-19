@@ -24,11 +24,12 @@ import pickle
 from app import mail
 from flask_mail import Message
 import random
+
 ###
 # Routing for your application.
 ###
 
-#Global
+#Global variable
 data=[]
 
 @app.route('/')
@@ -44,6 +45,7 @@ def about():
 
 
 def getReports():
+    """Function to get all records of reports made by the logged in user."""
     reports = Reports.query.filter_by(userid=current_user.get_id()).all()
     records=[{"id":r.reportid,
         "division":r.division,
@@ -57,6 +59,7 @@ def getReports():
 @app.route('/notification')
 @login_required
 def notify():
+    """Render the website's notification page."""
     if 'user' in session:
         u = session['user']
         session.pop('user',None)
@@ -73,6 +76,7 @@ def notify():
 @app.route('/show_reports')
 @login_required
 def showReports():
+    """Render the website's reports page for law enforcement admin user."""
     if 'user' in session:
         u = session['user']
         session.pop('user',None)
@@ -109,21 +113,14 @@ def login():
         email = form.email.data
         password = form.password.data
 
-        
-
         user = UserProfile.query.filter_by(email=email).first()
         
-        
-
-
         if user is not None and check_password_hash(user.password, password):
             session['user']='reg'
             remember_me = False
 
             if 'remember_me' in request.form:
                 remember_me = True
-
-        
 
             # If the user is not blank, meaning if a user was actually found,
             # then login the user and create the user session.
@@ -154,14 +151,19 @@ def login():
     return render_template('login.html', form=form)
     
 def generateCode():
+    """Function generates 6 digit verification code"""
     code= random.randrange(100000,999999)
     return code
 
 @app.route('/create-account', methods=['GET', 'POST'])
 def create():
+    """Render the website's create account page."""
     form = CreateForm()
     if request.method == "POST":
         if form.validate_on_submit():
+            #Check if email already exists in the database
+            #If it does display message
+            #If it doesn't send code to email provided and redirect to verification page
             email=form.email.data
             anEmail=UserProfile.query.filter_by(email=email).first()
             if anEmail is not None:
@@ -177,7 +179,6 @@ def create():
                 name = "Crime Predictors"
                 msg = Message(subject, sender =(name,'noreply@demo.com'), recipients=[email])
                 msg.body = 'Your verification code is ' + str(code)
-                print("hello3")
                 mail.send(msg)
                 return redirect(url_for('verify'))
         flash_errors(form)
@@ -185,6 +186,7 @@ def create():
 
 @app.route('/verify', methods=['GET', 'POST'])
 def verify():
+    """Render the website's verification page."""
     form=VerifyForm()
     if request.method == "POST":
         if form.validate_on_submit():
@@ -192,7 +194,9 @@ def verify():
             print(number)
 
             if 'response' in session:
-            
+                #Check code entered with code sent
+                #If match then redirect to login
+                #Otherwise display error message
                 email=data[0]
                 password=data[1]
                 s = session['response']
@@ -218,6 +222,7 @@ def verify():
 
 @app.route('/predict', methods=['GET', 'POST'])
 def predict():
+    """Render the website's prediction tool page."""
     div_arr= ['Allman Town', 'Barbican', 'Belfield', 'Black River' , 'Braeton', 'Bridgeport', 'Browns Town', 'Buff Bay', 'Cassia Park', 'Cedar Valley', 'Chancery Hill', 'Chester Castle', 'Christiana', 'De La Vega City', 'Denham Town', 'Duhaney Park', 'Edgewater', 'Ensom City', 'Falmouth', 'Frome', 'Gordon Town', 'Greater Portmore North', 'Green Island', 'Greenwich Town', 'Gregory Park', 'Hagley Park', 'Harbour View', 'Havendale', 'Hayes', 'Hellshire', 'Highgate', 'Hopewell', 'Independent City', 'Junction', 'Kintyre', 'Lacovia', 'Lauriston', 'Lawrence Tavern', 'Lluidas Vale', 'Lorrimers', 'Lucea', 'Mandeville', 'Martha Brae', 'Mavis Bank', 'Maxfield Park', 'May Pen East', 'May Pen North', 'Mile Gully', 'Mocho', 'Molynes Gardens', 'Mona', 'Moneague', 'Montego Bay Central', 'Montego Bay North', 'Montego Bay North East', 'Montego Bay South East', 'Montego Bay West', 'Morant Bay', 'Negril', 'Norbrook', 'Ocho Ríos', 'Old Harbour Central', 'Old Harbour North', 'Olympic Gardens', 'Oracabessa','Papine', 'Payne Lands', 'Petersfield', 'Point Hill', 'Port Antonio', 'Port Maria', 'Portmore Pines', 'Porus', 'Race Course', 'Rae Town', 'Red Hills', 'Richmond', 'Richmond', 'Rocky Point', 'Saint Anns Bay', 'Sandy Bay', 'Santa Cruz', 'Savanna-La-Mar', 'Savanna-La-Mar North', 'Seaforth', 'Seaview Gardens', 'Sherwood Content', 'Spanish Town', 'Springfield', 'Spur Tree', 'Stony Hill', 'Tivali Gardens', 'Trafalgar', 'Trench Town', 'Twickenham Park', 'Vineyard Town', 'Waterford', 'Waterhouse', 'Waterloo', 'Whitehall', 'Yallahs']
     model = pickle.load(open('model.pkl', 'rb'))
     form = PredictForm()
@@ -260,14 +265,15 @@ def predict():
 
 @app.route("/news")
 def news():
-    chrome_options = webdriver.ChromeOptions()
-    chrome_options.binary_location = os.environ.get('GOOGLE_CHROME_BIN')
-    chrome_options.add_argument("--headless")
-    chrome_options.add_argument("--disable-dev-shm-usage")
-    chrome_options.add_argument("--no-sandbox")
+    """Render the website's news page."""
+    #chrome_options = webdriver.ChromeOptions()
+    #chrome_options.binary_location = os.environ.get('GOOGLE_CHROME_BIN')
+    #chrome_options.add_argument("--headless")
+    #chrome_options.add_argument("--disable-dev-shm-usage")
+    #chrome_options.add_argument("--no-sandbox")
 
-    driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
-    #driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+    #driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
     driver.get('https://www.jamaicaobserver.com/section/latest-news/')
     driver.minimize_window()
     results = []
@@ -279,17 +285,10 @@ def news():
 
     for element in soup.findAll(attrs='col-12 col-md-6 article-wrapper'):
         image=element.find('img').get('src') 
-        #if image not in results:
-        #    results.append(image)
+        
         title=element.find(attrs='headline').find('a')
 
-        #if title not in results:
-        #    results.append(title.text)
-    
         pub=element.find(attrs='pubdate')
-
-        #if pub not in results:
-         #   results.append(pub.text)
         
         lynk=element.find(attrs='headline').find('a').get('href')
         record={'image':image, 'title':title.text, 'pub':pub.text, 'link':lynk}
@@ -334,7 +333,7 @@ def report():
 
 @app.route('/dashboard')
 def dashboard():
-    """Initialization of dashboard form"""
+    """Render the website's crime analytics page."""
     return render_template('dashboard.html')
     
 @app.route("/logout")
