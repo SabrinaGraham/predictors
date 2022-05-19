@@ -144,6 +144,8 @@ def login():
 
                 next_page = request.args.get('next')
                 return redirect(next_page or url_for('showReports'))
+            else:
+                flash('Username or Password is incorrect.', 'danger')
         else:
             flash('Username or Password is incorrect.', 'danger')
 
@@ -160,19 +162,23 @@ def create():
     if request.method == "POST":
         if form.validate_on_submit():
             email=form.email.data
-            password=form.password.data
-            password2=form.password2.data
-            code = generateCode()
-            session['response']=str(code)
-            data.append(email) 
-            data.append(password)
-            subject= "Email Verification Code"
-            name = "Crime Predictors"
-            msg = Message(subject, sender =(name,'noreply@demo.com'), recipients=[email])
-            msg.body = 'Your verification code is ' + str(code)
-            print("hello3")
-            mail.send(msg)
-            return redirect(url_for('verify'))
+            anEmail=UserProfile.query.filter_by(email=email).first()
+            if anEmail is not None:
+                flash('An account already exists with this email! Try logging in!','danger')
+            else:
+                password=form.password.data
+                password2=form.password2.data
+                code = generateCode()
+                session['response']=str(code)
+                data.append(email) 
+                data.append(password)
+                subject= "Email Verification Code"
+                name = "Crime Predictors"
+                msg = Message(subject, sender =(name,'noreply@demo.com'), recipients=[email])
+                msg.body = 'Your verification code is ' + str(code)
+                print("hello3")
+                mail.send(msg)
+                return redirect(url_for('verify'))
         flash_errors(form)
     return render_template('create_account.html', form=form)
 
@@ -202,6 +208,9 @@ def verify():
                     db.session.commit()
                     flash('Account successfully created!', 'success')
                     return redirect(url_for('login'))
+                else:
+                    flash('Code does not match!', 'danger')
+                    
 
     return render_template('verify.html', form=form)
 
